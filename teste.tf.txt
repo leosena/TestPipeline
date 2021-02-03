@@ -1,0 +1,31 @@
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  # We recommend pinning to the specific version of the Azure Provider you're using
+  # since new versions are released frequently
+  version = "=2.40.0"
+
+  features {}
+
+  # More information on the authentication methods supported by
+  # the AzureRM Provider can be found here:
+  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+
+  # subscription_id = "bb06be43-db97-47b2-b29f-87c220640520"
+  # client_id       = "..."
+  # client_secret   = "..."
+  # tenant_id       = "6c16c687-323a-469b-b24f-c9d09f0052ac"
+}
+
+# Create a resource group
+resource "azurerm_resource_group" "example" {
+  name     = "production-resources"
+  location = "West US"
+}
+
+# Create a virtual network in the production-resources resource group
+resource "azurerm_virtual_network" "test" {
+  name                = "production-network"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  address_space       = ["10.0.0.0/16"]
+}
